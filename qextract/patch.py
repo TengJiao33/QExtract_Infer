@@ -24,7 +24,7 @@ def patch_qwen(model, enable_rmsnorm=True, enable_swiglu=True, enable_lora_gemv=
         enable_lora_gemv: 是否替换为 W4A16-LoRA 融合 GEMV
     """
     try:
-        from qextract._C import fused_rmsnorm, fused_swiglu
+        from qextract._C import fused_rmsnorm, fused_swiglu, w4a16_lora_gemv
     except ImportError:
         raise RuntimeError(
             "[QExtract] CUDA 后端未编译！请先运行: pip install -e .\n"
@@ -46,6 +46,16 @@ def patch_qwen(model, enable_rmsnorm=True, enable_swiglu=True, enable_lora_gemv=
         if enable_swiglu and hasattr(layer, "mlp"):
             _patch_swiglu(layer.mlp, fused_swiglu)
             patched["swiglu"] += 1
+
+        # ── 替换 LoRA GEMV ──
+        if enable_lora_gemv:
+            for proj_name in ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]:
+                for sub_module in [getattr(layer, "self_attn", None), getattr(layer, "mlp", None)]:
+                    if sub_module is not None:
+                        proj_module = getattr(sub_module, proj_name, None)
+                        if proj_module is not None:
+                            if _patch_lora_gemv(proj_module, w4a16_lora_gemv):
+                                patched["lora_gemv"] += 1
 
     # ── 替换模型最终的 RMSNorm ──
     if enable_rmsnorm and hasattr(model.model, "norm"):
@@ -102,3 +112,51 @@ def _patch_swiglu(mlp_module, fused_fn):
         return output
 
     mlp_module.forward = types.MethodType(new_forward, mlp_module)
+
+
+def _patch_lora_gemv(proj_module, fused_fn):
+    """提取 PEFT 和 GPTQ 权重，替换包含 LoRA 适配器的 Linear 处理"""
+    if not hasattr(proj_module, "base_layer"):
+        return False
+        
+    base_layer = proj_module.base_layer
+    
+    # 检查是否为 GPTQ 量化层
+    if not hasattr(base_layer, "qweight") or not hasattr(base_layer, "scales"):
+        return False
+        
+    # 提取量化底座权重
+    qweight = base_layer.qweight
+    scales = base_layer.scales
+    zeros = getattr(base_layer, "qzeros", getattr(base_layer, "zeros", None))
+    if zeros is None:
+        return False
+        
+    # 获取组大小
+    group_size = getattr(base_layer, "group_size", 128)
+    
+    # 检查是否有 'default' LoRA 适配器
+    if not hasattr(proj_module, "lora_A") or "default" not in proj_module.lora_A:
+        return False
+        
+    # 提取并转置 LoRA 参数:
+    # PEFT 默认存储 nn.Linear 权重:
+    # lora_A.weight 形状是 [rank, in_features] -> 转置后为 [in_features, rank]
+    # lora_B.weight 形状是 [out_features, rank] -> 转置后为 [rank, out_features]
+    lora_A_t = proj_module.lora_A["default"].weight.detach().t().contiguous().half()
+    lora_B_t = proj_module.lora_B["default"].weight.detach().t().contiguous().half()
+    lora_alpha = getattr(proj_module, "lora_alpha", {}).get("default", 16.0)
+
+    def new_forward(self, x):
+        input_dtype = x.dtype
+        if x.dtype != torch.float16:
+            x = x.half()
+            
+        fused_output = fused_fn(
+            x, qweight, scales, zeros,
+            lora_A_t, lora_B_t, group_size, lora_alpha
+        )
+        return fused_output.to(input_dtype)
+
+    proj_module.forward = types.MethodType(new_forward, proj_module)
+    return True

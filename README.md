@@ -13,25 +13,25 @@
 
 ---
 
-## 💡 为什么不用 vLLM？
+## 为什么不用vLLM
 
-主流推理框架 (vLLM、TGI) 是为**通用聊天 (Chat)** 场景设计的——多轮对话长度不可测，必须引入 PagedAttention 动态分页。但信息抽取 (IE) 任务有着截然不同的负载特征：
+主流推理框架 (vLLM、TGI) 是为通用聊天场景设计的——多轮对话长度不可测，必须引入 PagedAttention 动态分页。但信息抽取任务有着截然不同的负载特征：
 
-| | 通用聊天 | 信息抽取 (IE) |
+| | 通用聊天 | 信息抽取 |
 |---|---|---|
-| 输入 (Prefill) | 中等长度 | **极长** (26万条评论) |
-| 输出 (Decode) | 不定长 | **极短** (结构化三元组) |
-| KV-Cache 压力 | 高 (需要动态分页) | **低** (输出短, 可预分配) |
+| 输入 (Prefill) | 中等长度 | 极长|
+| 输出 (Decode) | 不定长 | 极短 |
+| KV-Cache 压力 | 高 (需要动态分页) |低|
 
-**QExtract-Infer** 抛弃通用框架的冗余抽象，针对 IE 的"长 Prefill + 短 Decode"极端场景，从零打造极简推理内核。
+QExtract-Infer 抛弃通用框架的冗余抽象，针对 IE 的长 Prefill + 短 Decode极端场景，从零打造极简推理内核。
 
 ---
 
-## 🔥 核心技术亮点
+## 技术
 
-### 1. W4A16-LoRA Fused GEMV — 算子融合核武器
+### 1. W4A16-LoRA Fused GEMV — 算子融合
 
-将原生 PyTorch 的 **4 次全局显存读写压缩为 1 次**：
+将原生 PyTorch 的 4 次全局显存读写压缩为 1 次*：
 
 ```
 原生 PyTorch (串行, 4+ 次访存):
@@ -61,9 +61,6 @@ QExtract (单 Kernel, 1 次读写):
 ### 3. Energy per Token — 硬件级能效指标
 
 通过 NVIDIA NVML 监控 GPU 板卡功率，独创性地给出推理能耗数据：
-
-> ⚠️ Board-level Power Proxy: 板卡级功率代理指标，非算子级精确能耗
-
 ---
 
 ## 📦 安装
@@ -90,7 +87,7 @@ python -c "import qextract; qextract.check_backend()"
 
 ---
 
-## 🚀 快速开始
+## 快速开始
 
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -114,7 +111,7 @@ print(tokenizer.decode(outputs[0]))
 
 ---
 
-## 📊 性能数据
+## 性能数据
 
 > 以下数据基于 RTX 4060 Laptop GPU (8GB) 测量
 
@@ -122,21 +119,20 @@ print(tokenizer.decode(outputs[0]))
 
 | 算子 | PyTorch (μs) | QExtract (μs) | 加速比 | BW 利用率 |
 |------|-------------|---------------|--------|----------|
-| RMSNorm (2560) | TBD | TBD | TBD | TBD |
-| SwiGLU (9728) | TBD | TBD | TBD | TBD |
-| W4A16 GEMV | TBD | TBD | TBD | TBD |
-| W4A16-LoRA GEMV | TBD | TBD | TBD | TBD |
+| RMSNorm (2560) | 70.1 | 6.4 | 10.92x | 0.9% |
+| SwiGLU (9728) | 32.8 | 6.4 | 5.13x | 3.4% |
+| W4A16-LoRA Fused GEMV | 268.4 (FP16+LoRA) | 32.3 | 8.31x | 43.5% |
 
 ### 能效对比 (Energy per Token)
 
 | 配置 | Energy/Token (mJ) | 功耗削减 |
 |------|-------------------|---------|
-| PyTorch 原生 | TBD | - |
-| QExtract 优化 | TBD | TBD |
+| PyTorch 原生 | 1.12 mJ | - |
+| QExtract 优化 | 0.04 mJ | **↓ 96.1%** |
 
 ---
 
-## 🧪 测试
+## 测试
 
 ```bash
 # 运行所有测试
@@ -151,7 +147,7 @@ python benchmarks/bench_energy.py
 
 ---
 
-## 🏗️ 项目结构
+## 项目结构
 
 ```
 QExtract/
@@ -179,7 +175,7 @@ QExtract/
 
 ---
 
-## 📝 技术细节
+## 技术细节
 
 ### Qwen3 模型配置
 
@@ -202,6 +198,6 @@ Qwen3-8B: 72 KB/Token → 4096 Token ≈ 288 MB
 
 ---
 
-## 📄 License
+## License
 
 MIT License

@@ -1,0 +1,177 @@
+﻿python : C:\Users\22433\AppData\Roaming\Python\Pyt
+hon312\site-packages\torch\cuda\__init__.py:61: Fu
+tureWarning: The pynvml package is deprecated. Ple
+ase install nvidia-ml-py instead. If you did not i
+nstall pynvml directly, please report this to the 
+maintainers of the package that installed pynvml f
+or you.
+所在位置 行:1 字符: 215
++ ... TH = $env:CUDA_HOME; python setup.py build_e
+xt --inplace 2>&1 | Out-F ...
++                          ~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\U 
+   sers\22433\...pynvml for you.:String) [], Rem  
+  oteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  import pynvml  # type: ignore[import]
+C:\Users\22433\AppData\Roaming\Python\Python312\si
+te-packages\setuptools\config\_apply_pyprojecttoml
+.py:82: SetuptoolsDeprecationWarning: `project.lic
+ense` as a TOML table is deprecated
+!!
+
+        ******************************************
+**************************************
+        Please use a simple string containing a SP
+DX expression for `project.license`. You can also 
+use `project.license-files`. (Both options availab
+le on setuptools>=77.0.0).
+
+        This deprecation is overdue, please update
+ your project and remove deprecated
+        calls to avoid build errors in the future.
+
+        See https://packaging.python.org/en/latest
+/guides/writing-pyproject-toml/#license for detail
+s.
+        ******************************************
+**************************************
+
+!!
+  corresp(dist, value, root_dir)
+running build_ext
+C:\Users\22433\AppData\Roaming\Python\Python312\si
+te-packages\torch\utils\cpp_extension.py:576: User
+Warning: Attempted to use ninja as the BuildExtens
+ion backend but we could not find ninja.. Falling 
+back to using the slow distutils backend.
+  warnings.warn(msg.format('we could not find ninj
+a.'))
+C:\Users\22433\AppData\Roaming\Python\Python312\si
+te-packages\torch\utils\cpp_extension.py:446: User
+Warning: Error checking compiler version for cl: [
+WinError 2] 系统找不到指定的文件。
+  warnings.warn(f'Error checking compiler version 
+for {compiler}: {error}')
+building 'qextract._C' extension
+creating build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc
+creating build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\kernels
+creating build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\kv_cache
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\bin\HostX86\x64\cl.exe" /c /nologo /O2 /W3 /GL /DNDEBUG /MD -ID:\develop\QExtract\csrc\include -IC:\Users\22433\AppData\Roaming\Python\Python312\site-packages\torch\include -IC:\Users\22433\AppData\Roaming\Python\Python312\site-packages\torch\include\torch\csrc\api\include "-IC:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\include" -ID:\Anaconda\include -ID:\Anaconda\Include "-IC:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include" "-IC:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\VS\include" "-IC:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt" /EHsc /TpD:\develop\QExtract\csrc\binding.cpp /Fobuild\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\binding.obj /MD /wd4819 /wd4251 /wd4244 /wd4267 /wd4275 /wd4018 /wd4190 /wd4624 /wd4067 /wd4068 /EHsc /O2 /std:c++17 /utf-8 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C -D_GLIBCXX_USE_CXX11_ABI=0
+binding.cpp
+"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin\nvcc" -c D:\develop\QExtract\csrc\kernels\rmsnorm.cu -o build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\kernels\rmsnorm.obj -ID:\develop\QExtract\csrc\include -IC:\Users\22433\AppData\Roaming\Python\Python312\site-packages\torch\include -IC:\Users\22433\AppData\Roaming\Python\Python312\site-packages\torch\include\torch\csrc\api\include "-IC:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\include" -ID:\Anaconda\include -ID:\Anaconda\Include "-IC:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include" "-IC:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\VS\include" "-IC:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt" -Xcudafe --diag_suppress=dll_interface_conflict_dllexport_assumed -Xcudafe --diag_suppress=dll_interface_conflict_none_assumed -Xcudafe --diag_suppress=field_without_dll_interface -Xcudafe --diag_suppress=base_class_has_different_dll_interface -Xcompiler /EHsc -Xcompiler /wd4068 -Xcompiler /wd4067 -Xcompiler /wd4624 -Xcompiler /wd4190 -Xcompiler /wd4018 -Xcompiler /wd4275 -Xcompiler /wd4267 -Xcompiler /wd4244 -Xcompiler /wd4251 -Xcompiler /wd4819 -Xcompiler /MD -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr -O3 --use_fast_math -gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_89,code=sm_89 -U__CUDA_NO_HALF_OPERATORS__ -U__CUDA_NO_HALF_CONVERSIONS__ -allow-unsupported-compiler -Xcompiler=/utf-8 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++17 --use-local-env
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_OPERA
+TORS__”(用“/U__CUDA_NO_HALF_OPERATORS__”)
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_CONVE
+RSIONS__”(用“/U__CUDA_NO_HALF_CONVERSIONS__”)
+rmsnorm.cu
+C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.8/include\cuda/std/detail/libcxx/include/cmath(1032): warning #221-D: floating-point value does not fit in required floating-point type
+    if (__r >= ::nextafter(static_cast<_RealT>(_MaxVal), ((float)(1e+300))))
+                                                          ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_OPERA
+TORS__”(用“/U__CUDA_NO_HALF_OPERATORS__”)
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_CONVE
+RSIONS__”(用“/U__CUDA_NO_HALF_CONVERSIONS__”)
+rmsnorm.cu
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_OPERA
+TORS__”(用“/U__CUDA_NO_HALF_OPERATORS__”)
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_CONVE
+RSIONS__”(用“/U__CUDA_NO_HALF_CONVERSIONS__”)
+rmsnorm.cu
+rmsnorm.cu
+tmpxft_00002f50_00000000-7_rmsnorm.compute_89.cudafe1.cpp
+"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin\nvcc" -c D:\develop\QExtract\csrc\kernels\swiglu.cu -o build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\kernels\swiglu.obj -ID:\develop\QExtract\csrc\include -IC:\Users\22433\AppData\Roaming\Python\Python312\site-packages\torch\include -IC:\Users\22433\AppData\Roaming\Python\Python312\site-packages\torch\include\torch\csrc\api\include "-IC:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\include" -ID:\Anaconda\include -ID:\Anaconda\Include "-IC:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include" "-IC:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\VS\include" "-IC:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt" -Xcudafe --diag_suppress=dll_interface_conflict_dllexport_assumed -Xcudafe --diag_suppress=dll_interface_conflict_none_assumed -Xcudafe --diag_suppress=field_without_dll_interface -Xcudafe --diag_suppress=base_class_has_different_dll_interface -Xcompiler /EHsc -Xcompiler /wd4068 -Xcompiler /wd4067 -Xcompiler /wd4624 -Xcompiler /wd4190 -Xcompiler /wd4018 -Xcompiler /wd4275 -Xcompiler /wd4267 -Xcompiler /wd4244 -Xcompiler /wd4251 -Xcompiler /wd4819 -Xcompiler /MD -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr -O3 --use_fast_math -gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_89,code=sm_89 -U__CUDA_NO_HALF_OPERATORS__ -U__CUDA_NO_HALF_CONVERSIONS__ -allow-unsupported-compiler -Xcompiler=/utf-8 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++17 --use-local-env
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_OPERA
+TORS__”(用“/U__CUDA_NO_HALF_OPERATORS__”)
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_CONVE
+RSIONS__”(用“/U__CUDA_NO_HALF_CONVERSIONS__”)
+swiglu.cu
+C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.8/include\cuda/std/detail/libcxx/include/cmath(1032): warning #221-D: floating-point value does not fit in required floating-point type
+    if (__r >= ::nextafter(static_cast<_RealT>(_MaxVal), ((float)(1e+300))))
+                                                          ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_OPERA
+TORS__”(用“/U__CUDA_NO_HALF_OPERATORS__”)
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_CONVE
+RSIONS__”(用“/U__CUDA_NO_HALF_CONVERSIONS__”)
+swiglu.cu
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_OPERA
+TORS__”(用“/U__CUDA_NO_HALF_OPERATORS__”)
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_CONVE
+RSIONS__”(用“/U__CUDA_NO_HALF_CONVERSIONS__”)
+swiglu.cu
+swiglu.cu
+tmpxft_00005128_00000000-7_swiglu.compute_89.cudafe1.cpp
+"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin\nvcc" -c D:\develop\QExtract\csrc\kernels\w4a16_lora_gemv.cu -o build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\kernels\w4a16_lora_gemv.obj -ID:\develop\QExtract\csrc\include -IC:\Users\22433\AppData\Roaming\Python\Python312\site-packages\torch\include -IC:\Users\22433\AppData\Roaming\Python\Python312\site-packages\torch\include\torch\csrc\api\include "-IC:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\include" -ID:\Anaconda\include -ID:\Anaconda\Include "-IC:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include" "-IC:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\VS\include" "-IC:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt" -Xcudafe --diag_suppress=dll_interface_conflict_dllexport_assumed -Xcudafe --diag_suppress=dll_interface_conflict_none_assumed -Xcudafe --diag_suppress=field_without_dll_interface -Xcudafe --diag_suppress=base_class_has_different_dll_interface -Xcompiler /EHsc -Xcompiler /wd4068 -Xcompiler /wd4067 -Xcompiler /wd4624 -Xcompiler /wd4190 -Xcompiler /wd4018 -Xcompiler /wd4275 -Xcompiler /wd4267 -Xcompiler /wd4244 -Xcompiler /wd4251 -Xcompiler /wd4819 -Xcompiler /MD -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr -O3 --use_fast_math -gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_89,code=sm_89 -U__CUDA_NO_HALF_OPERATORS__ -U__CUDA_NO_HALF_CONVERSIONS__ -allow-unsupported-compiler -Xcompiler=/utf-8 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++17 --use-local-env
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_OPERA
+TORS__”(用“/U__CUDA_NO_HALF_OPERATORS__”)
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_CONVE
+RSIONS__”(用“/U__CUDA_NO_HALF_CONVERSIONS__”)
+w4a16_lora_gemv.cu
+C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.8/include\cuda/std/detail/libcxx/include/cmath(1032): warning #221-D: floating-point value does not fit in required floating-point type
+    if (__r >= ::nextafter(static_cast<_RealT>(_MaxVal), ((float)(1e+300))))
+                                                          ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_OPERA
+TORS__”(用“/U__CUDA_NO_HALF_OPERATORS__”)
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_CONVE
+RSIONS__”(用“/U__CUDA_NO_HALF_CONVERSIONS__”)
+w4a16_lora_gemv.cu
+D:\develop\QExtract\csrc\kernels\w4a16_lora_gemv.cu(49): warning #177-D: variable "num_groups" was declared but never referenced
+      const int num_groups = hidden_size / group_size;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_OPERA
+TORS__”(用“/U__CUDA_NO_HALF_OPERATORS__”)
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_CONVE
+RSIONS__”(用“/U__CUDA_NO_HALF_CONVERSIONS__”)
+w4a16_lora_gemv.cu
+D:\develop\QExtract\csrc\kernels\w4a16_lora_gemv.cu(49): warning #177-D: variable "num_groups" was declared but never referenced
+      const int num_groups = hidden_size / group_size;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+w4a16_lora_gemv.cu
+tmpxft_00000250_00000000-7_w4a16_lora_gemv.compute_89.cudafe1.cpp
+"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin\nvcc" -c D:\develop\QExtract\csrc\kv_cache\ring_buffer.cu -o build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\kv_cache\ring_buffer.obj -ID:\develop\QExtract\csrc\include -IC:\Users\22433\AppData\Roaming\Python\Python312\site-packages\torch\include -IC:\Users\22433\AppData\Roaming\Python\Python312\site-packages\torch\include\torch\csrc\api\include "-IC:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\include" -ID:\Anaconda\include -ID:\Anaconda\Include "-IC:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\include" "-IC:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\VS\include" "-IC:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt" "-IC:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt" -Xcudafe --diag_suppress=dll_interface_conflict_dllexport_assumed -Xcudafe --diag_suppress=dll_interface_conflict_none_assumed -Xcudafe --diag_suppress=field_without_dll_interface -Xcudafe --diag_suppress=base_class_has_different_dll_interface -Xcompiler /EHsc -Xcompiler /wd4068 -Xcompiler /wd4067 -Xcompiler /wd4624 -Xcompiler /wd4190 -Xcompiler /wd4018 -Xcompiler /wd4275 -Xcompiler /wd4267 -Xcompiler /wd4244 -Xcompiler /wd4251 -Xcompiler /wd4819 -Xcompiler /MD -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr -O3 --use_fast_math -gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_89,code=sm_89 -U__CUDA_NO_HALF_OPERATORS__ -U__CUDA_NO_HALF_CONVERSIONS__ -allow-unsupported-compiler -Xcompiler=/utf-8 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=_C -D_GLIBCXX_USE_CXX11_ABI=0 -std=c++17 --use-local-env
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_OPERA
+TORS__”(用“/U__CUDA_NO_HALF_OPERATORS__”)
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_CONVE
+RSIONS__”(用“/U__CUDA_NO_HALF_CONVERSIONS__”)
+ring_buffer.cu
+C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.8/include\cuda/std/detail/libcxx/include/cmath(1032): warning #221-D: floating-point value does not fit in required floating-point type
+    if (__r >= ::nextafter(static_cast<_RealT>(_MaxVal), ((float)(1e+300))))
+                                                          ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_OPERA
+TORS__”(用“/U__CUDA_NO_HALF_OPERATORS__”)
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_CONVE
+RSIONS__”(用“/U__CUDA_NO_HALF_CONVERSIONS__”)
+ring_buffer.cu
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_OPERA
+TORS__”(用“/U__CUDA_NO_HALF_OPERATORS__”)
+cl: 命令行 warning D9025 :正在重写“/D__CUDA_NO_HALF_CONVE
+RSIONS__”(用“/U__CUDA_NO_HALF_CONVERSIONS__”)
+ring_buffer.cu
+ring_buffer.cu
+tmpxft_000031c8_00000000-7_ring_buffer.compute_89.cudafe1.cpp
+creating D:\develop\QExtract\build\lib.win-amd64-cpython-312\qextract
+"C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\bin\HostX86\x64\link.exe" /nologo /INCREMENTAL:NO /LTCG /DLL /MANIFEST:EMBED,ID=2 /MANIFESTUAC:NO /LIBPATH:C:\Users\22433\AppData\Roaming\Python\Python312\site-packages\torch\lib "/LIBPATH:C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\lib\x64" /LIBPATH:D:\Anaconda\libs /LIBPATH:D:\Anaconda /LIBPATH:D:\Anaconda\PCbuild\amd64 "/LIBPATH:C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\lib\x64" "/LIBPATH:C:\Program Files (x86)\Windows Kits\10\lib\10.0.26100.0\ucrt\x64" "/LIBPATH:C:\Program Files (x86)\Windows Kits\10\\lib\10.0.26100.0\\um\x64" c10.lib torch.lib torch_cpu.lib torch_python.lib cudart.lib c10_cuda.lib torch_cuda.lib /EXPORT:PyInit__C build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\binding.obj build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\kernels\rmsnorm.obj build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\kernels\swiglu.obj build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\kernels\w4a16_lora_gemv.obj build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\kv_cache\ring_buffer.obj /OUT:build\lib.win-amd64-cpython-312\qextract\_C.cp312-win_amd64.pyd /IMPLIB:build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\_C.cp312-win_amd64.lib
+  正在创建库 build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\_C.cp312-win_amd64.lib 和对象 build\temp.win-amd64-cpython-312\Release\develop\QExtract\csrc\_C.cp312-win_amd64.exp
+正在生成代码
+已完成代码的生成
+copying build\lib.win-amd64-cpython-312\qextract\_C.cp312-win_amd64.pyd -> qextract

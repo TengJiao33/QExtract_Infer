@@ -69,6 +69,12 @@ def swiglu_pytorch_ref(gate, up):
     return (torch.nn.functional.silu(gate.float()) * up.float()).half()
 
 
+def w4a16_lora_gemv_pytorch_ref(x, w_fp16, lora_A, lora_B, scaling):
+    base_out = torch.matmul(x.float(), w_fp16.float())
+    lora_out = torch.matmul(torch.matmul(x.float(), lora_A.float()), lora_B.float())
+    return (base_out + scaling * lora_out).half()
+
+
 def bench_rmsnorm(hidden_size: int, batch_size: int = 1):
     """RMSNorm 基准测试"""
     device = "cuda"
@@ -135,6 +141,65 @@ def bench_swiglu(intermediate_size: int, batch_size: int = 1):
     return pytorch_result, qextract_result
 
 
+def bench_lora_fused_gemv(hidden_size: int, out_features: int, batch_size: int = 1):
+    """W4A16-LoRA Fused GEMV 基准测试"""
+    rank = 32
+    group_size = 128
+    device = "cuda"
+    
+    x = torch.randn(batch_size, hidden_size, dtype=torch.float16, device=device)
+    w_fp16 = torch.randn(hidden_size, out_features, dtype=torch.float16, device=device)
+    
+    lora_A = torch.randn(hidden_size, rank, dtype=torch.float16, device=device)
+    lora_B = torch.randn(rank, out_features, dtype=torch.float16, device=device)
+    lora_alpha = 16.0
+    scaling = lora_alpha / rank
+    
+    # 动态加载测试用的 GPTQ 模拟函数 (由于 benchmarks 目录和 tests 目录平行，需处理路径或直接 sys.path.append)
+    import sys
+    import os
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+    from tests.test_w4a16_gemv import simulate_gptq_quantize
+    
+    quant = simulate_gptq_quantize(w_fp16, group_size)
+    qweight, scales, zeros = quant["qweight"], quant["scales"], quant["zeros"]
+
+    # 访存量分析：
+    # INT4 权重: (hidden * out) / 2 bytes
+    # scales/zeros: 2 * (hidden / group) * out * (2 bytes float16)  (*2是由于有scales和zeros)
+    # LoRA_A/B: (hidden*rank + rank*out) * 2 bytes
+    # 读 x, 写 out: (batch*hidden + batch*out) * 2 bytes
+    bytes_accessed = (
+        (hidden_size * out_features) // 2 +
+        2 * (hidden_size // group_size) * out_features * 2 +
+        (hidden_size * rank + rank * out_features) * 2 +
+        (batch_size * hidden_size + batch_size * out_features) * 2
+    )
+
+    # PyTorch Baseline 我们用纯 FP16 乘法，代表最理想的带宽情况（不需要 Dequant CPU/GPU overhead）
+    pytorch_result = bench_kernel(
+        lambda: w4a16_lora_gemv_pytorch_ref(x, w_fp16, lora_A, lora_B, scaling),
+        (),
+        f"PyTorch FP16+LoRA ({hidden_size}x{out_features})",
+        bytes_accessed,
+    )
+
+    try:
+        from qextract._C import w4a16_lora_gemv
+        qextract_result = bench_kernel(
+            lambda: w4a16_lora_gemv(x, qweight, scales, zeros, lora_A, lora_B, group_size, lora_alpha),
+            (),
+            f"QExtract W4A16-LoRA ({hidden_size}x{out_features})",
+            bytes_accessed,
+        )
+        speedup = pytorch_result["latency_us"] / qextract_result["latency_us"]
+        qextract_result["speedup"] = speedup
+    except ImportError:
+        qextract_result = None
+
+    return pytorch_result, qextract_result
+
+
 def print_results(results: list):
     """以 Markdown 表格格式打印结果"""
     print()
@@ -173,13 +238,18 @@ def main():
     all_results = []
 
     # RMSNorm
-    print("\n[1/2] 测试 RMSNorm...")
+    print("\n[1/3] 测试 RMSNorm...")
     pt, qe = bench_rmsnorm(cfg["hidden"], args.batch)
     all_results.extend([pt, qe])
 
     # SwiGLU
-    print("[2/2] 测试 SwiGLU...")
+    print("[2/3] 测试 SwiGLU...")
     pt, qe = bench_swiglu(cfg["intermediate"], args.batch)
+    all_results.extend([pt, qe])
+
+    # W4A16-LoRA GEMV
+    print("[3/3] 测试 W4A16-LoRA Fused GEMV...")
+    pt, qe = bench_lora_fused_gemv(cfg["hidden"], cfg["hidden"], args.batch)
     all_results.extend([pt, qe])
 
     print_results([r for r in all_results if r is not None])

@@ -13,13 +13,17 @@ from torch.utils.cpp_extension import BuildExtension, CUDAExtension
 NVCC_FLAGS = [
     "-O3",
     "--use_fast_math",
-    "-gencode=arch=compute_86,code=sm_86",   # Ampere 兼容
-    "-gencode=arch=compute_89,code=sm_89",   # Ada Lovelace 原生
+    "-gencode=arch=compute_86,code=sm_86",   # Ampere
+    "-gencode=arch=compute_89,code=sm_89",   # Ada Lovelace
     "-U__CUDA_NO_HALF_OPERATORS__",
     "-U__CUDA_NO_HALF_CONVERSIONS__",
+    "-allow-unsupported-compiler",           # Bypass MSVC 2025 check
 ]
+# Windows: /utf-8 for Unicode source files with CJK comments
+if os.name == "nt":
+    NVCC_FLAGS.append("-Xcompiler=/utf-8")
 
-CXX_FLAGS = ["/O2", "/std:c++17"] if os.name == "nt" else ["-O3", "-std=c++17"]
+CXX_FLAGS = ["/O2", "/std:c++17", "/utf-8"] if os.name == "nt" else ["-O3", "-std=c++17"]
 
 # ─── 源文件收集 ───
 csrc_dir = os.path.join(os.path.dirname(__file__), "csrc")
