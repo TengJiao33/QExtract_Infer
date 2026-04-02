@@ -23,7 +23,7 @@
 | 输出 (Decode) | 不定长 | 极短 |
 | KV-Cache 压力 | 高 (需要动态分页) |低|
 
-QExtract-Infer 抛弃通用框架的冗余抽象，针对 IE 的长 Prefill + 短 Decode极端场景，从零打造极简推理内核。
+QExtract-Infer 抛弃通用框架的冗余抽象，针对 IE 的长 Prefill + 短 Decode极端场景，打造极简推理内核。
 
 ---
 
@@ -58,21 +58,19 @@ QExtract (单 Kernel, 1 次读写):
 └──────────────────────────────────────┘
 ```
 
-### 3. Energy per Token — 硬件级能效指标
+### 3. Energy per Token
 
-通过 NVIDIA NVML 监控 GPU 板卡功率，独创性地给出推理能耗数据：
+通过 NVIDIA NVML 监控 GPU 板卡功率，给出推理能耗数据：
 ---
 
-## 📦 安装
-
-### 环境要求
+### 环境
 
 - Python ≥ 3.10
 - PyTorch ≥ 2.0 (CUDA)
 - CUDA Toolkit 12.x
 - Visual Studio 2022 Build Tools (Windows) / GCC (Linux)
 
-### 安装步骤
+### 安装
 
 ```bash
 git clone https://github.com/your-repo/QExtract-Infer.git
@@ -87,7 +85,7 @@ python -c "import qextract; qextract.check_backend()"
 
 ---
 
-## 快速开始
+## 开始
 
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -111,7 +109,7 @@ print(tokenizer.decode(outputs[0]))
 
 ---
 
-## 性能数据
+## 性能
 
 > 以下数据基于 RTX 4060 Laptop GPU (8GB) 测量
 
