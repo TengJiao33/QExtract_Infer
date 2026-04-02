@@ -1,0 +1,30 @@
+# 排除编译产物和模型文件
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.so
+*.pyd
+*.pyc
+
+# CUDA 编译中间文件
+*.o
+*.obj
+*.cubin
+*.fatbin
+
+# NCU 报告
+benchmarks/ncu_reports/
+
+# 模型权重
+models/
+*.safetensors
+*.bin
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
